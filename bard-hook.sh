@@ -4,6 +4,7 @@
 COMMIT_MSG_FILE=$1
 ORIGINAL_MSG=$(cat "$COMMIT_MSG_FILE")
 STYLE="${BARD_STYLE:-Shakespeare}"
+echo "Using style: $style"
 
 # Check for Gemini API key
 if [ -z "$GEMINI_API_KEY" ]; then
