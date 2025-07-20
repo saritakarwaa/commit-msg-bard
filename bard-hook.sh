@@ -3,7 +3,7 @@
 # commit-msg hook entry point
 COMMIT_MSG_FILE=$1
 ORIGINAL_MSG=$(cat "$COMMIT_MSG_FILE")
-STYLE="Shakespeare"
+STYLE="${BARD_STYLE:-Shakespeare}"
 
 # Check for Gemini API key
 if [ -z "$GEMINI_API_KEY" ]; then
@@ -14,11 +14,12 @@ fi
 # Gemini API endpoint
 ENDPOINT="https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$GEMINI_API_KEY"
 
-# JSON payload
+#JSON payload
 JSON_DATA=$(jq -n \
   --arg style "$STYLE" \
   --arg msg "$ORIGINAL_MSG" \
-  '{contents: [{parts: [{text: "Rewrite this Git commit message in \($style) style as a single short commit line (max 1 sentence): \($msg)"}]}]}')
+  '{contents: [{parts: [{text: "Rewrite this Git commit message in \($style) style. Respond with exactly one short sentence, not a poem or multiple lines. For example: '\''fix login bug'\'' → '\''Login bug be gone!'\''."}]}]}')
+
 
 
 # Call Gemini API
